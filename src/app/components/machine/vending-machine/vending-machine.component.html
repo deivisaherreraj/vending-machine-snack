@@ -1,1 +1,41 @@
-<p>vending-machine works!</p>
+<mat-drawer-container class="container">
+    <mat-drawer-content>
+        <div fxLayout="column" class="grid-container">
+            <mat-card fxFlex>
+                <mat-card-title fxLayout="row">
+                  <h2 class="mat-h2">Registrar producto</h2>
+                </mat-card-title>
+
+                <form [formGroup]="formSnack">
+                    <mat-card-content>
+                        <div layout="row" flex>
+                            <div class="input-group">
+                                <table class="example-full-width" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <mat-form-field style="width: 100%;" appearance="fill">
+                                                <mat-label>Nombre producto</mat-label>
+                                                <input type="text" matInput formControlName="name" placeholder="Nombre">
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field style="width: 100%;" appearance="fill">
+                                                <mat-label>Precio producto</mat-label>
+                                                <input type="number" matInput formControlName="value" placeholder="Precio">
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <button mat-mini-fab color="primary" style="margin-bottom: 20px;" type="submit" matTooltip="Agregar producto" [disabled]="formSnack.invalid">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </form>
+            </mat-card>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>
