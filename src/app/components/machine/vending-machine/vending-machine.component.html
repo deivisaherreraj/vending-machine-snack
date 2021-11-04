@@ -6,7 +6,7 @@
                   <h2 class="mat-h2">Registrar producto</h2>
                 </mat-card-title>
 
-                <form [formGroup]="formSnack">
+                <form [formGroup]="formSnack" (ngSubmit)="addProduct()">
                     <mat-card-content>
                         <div layout="row" flex>
                             <div class="input-group">
@@ -29,7 +29,91 @@
                                                 <mat-icon>add</mat-icon>
                                             </button>
                                         </td>
+                                        <td>
+                                            <button mat-mini-fab color="primary" style="margin-bottom: 20px;" type="button" matTooltip="Limpiar productos" [disabled]="(myListSnack.length < 3)" (click)="clearProduct()">
+                                                <mat-icon>clear_all</mat-icon>
+                                            </button>
+                                        </td>
                                     </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </form>
+            </mat-card>
+
+            <mat-card fxFlex>
+                <mat-card-title fxLayout="row">
+                    <h2 class="mat-h2">Maquina</h2>
+                </mat-card-title>
+
+                <form [formGroup]="formMachine">
+                    <mat-card-content>
+                        <div layout="row" flex>
+                            <div class="input-group">
+                                <table class="example-full-width" cellspacing="0">
+                                    <tr>
+                                        <td rowspan="4">
+                                            <img src="../../../../assets/image/maquina-expendedora.jpg" >
+                                        </td>
+                                        <td>
+                                            <mat-label>PRODUCTOS</mat-label>
+                                                            
+                                            <div fxLayout="row" fxLayoutAlign="center end" *ngIf="myListSnack.length < 3">
+                                                <h4 class="mat-h4 no-data">
+                                                    <strong>Debe registrar maximo 3 productos.</strong>
+                                                </h4>
+                                            </div>
+                                            
+                                            <div fxLayout="row" fxLayoutAlign="center end" *ngIf="myListSnack.length >= 3">
+                                                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" formControlName="options"
+                                                    [(ngModel)]="selectedProduct">
+                                                <mat-radio-button class="example-radio-button" *ngFor="let snack of myListSnack" [value]="snack.name" (change)="radioChange(snack)">
+                                                    {{snack.name}}: <span class="span-badge-content">${{snack.value}}</span>
+                                                </mat-radio-button>
+                                                </mat-radio-group>
+                                                <div>SELECCIONADO: <strong>{{selectedProduct}}</strong></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>                                    
+                                        <td>
+                                            <mat-form-field class="example-full-width example-from-display" appearance="fill">
+                                                <mat-label>Display</mat-label>
+                                                <input matInput type="text" [disabled]="true" formControlName="display" align="end">                                                
+                                            </mat-form-field>
+                                        </td>
+                                    </tr> 
+                                    <tr>                                    
+                                        <td>
+                                            <mat-list role="list">
+                                                <mat-list-item role="listitem">
+                                                    <button mat-mini-fab aria-label="Example icon button with a menu icon" style="margin-right: 10px;">
+                                                        <img class="png-icon" src="../../../../assets/image/money.png" style="width: 24px; height: 24px;">
+                                                    </button>                                                    
+                                                    <mat-label>500</mat-label>
+                                                </mat-list-item>
+                                                <mat-list-item role="listitem">
+                                                    <button mat-mini-fab aria-label="Example icon button with a menu icon" style="margin-right: 10px;">
+                                                        <img class="png-icon" src="../../../../assets/image/money.png" style="width: 24px; height: 24px;">
+                                                    </button>                                                    
+                                                    <mat-label>1.000</mat-label>
+                                                </mat-list-item>
+                                                <mat-list-item role="listitem">
+                                                    <button mat-mini-fab aria-label="Example icon button with a menu icon" style="margin-right: 10px;">
+                                                        <img class="png-icon" src="../../../../assets/image/dollars.png" style="width: 24px; height: 24px;">
+                                                    </button>                                                    
+                                                    <mat-label>2.000</mat-label>
+                                                </mat-list-item>
+                                                <mat-list-item role="listitem">
+                                                    <button mat-mini-fab aria-label="Example icon button with a menu icon" style="margin-right: 10px;">
+                                                        <img class="png-icon" src="../../../../assets/image/dollars.png" style="width: 24px; height: 24px;">
+                                                    </button>                                                    
+                                                    <mat-label>5.000</mat-label>
+                                                </mat-list-item>
+                                              </mat-list>                                              
+                                        </td>
+                                    </tr>                                                                                        
                                 </table>
                             </div>
                         </div>

@@ -13,6 +13,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [],
@@ -31,7 +33,9 @@ import {MatRadioModule} from '@angular/material/radio';
     MatFormFieldModule,
     MatPaginatorModule,
     MatDividerModule,
-    MatRadioModule
+    MatRadioModule,
+    MatBadgeModule,
+    MatListModule
   ]
 })
 export class MaterialModule { }
