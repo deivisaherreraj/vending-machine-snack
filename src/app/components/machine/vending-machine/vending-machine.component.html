@@ -89,28 +89,28 @@
                                             <mat-list role="list">
                                                 <mat-list-item role="listitem">
                                                     <button mat-mini-fab aria-label="Example icon button with a menu icon" style="margin-right: 10px;"
-                                                        (click)="setStateTransition(500)" type="button">
+                                                        (click)="setStateTransition(500)" type="button" [disabled]="buttonClaim">
                                                         <img class="png-icon" src="../../../../assets/image/money.png" style="width: 24px; height: 24px;">
                                                     </button>                                                    
                                                     <mat-label>500</mat-label>
                                                 </mat-list-item>
                                                 <mat-list-item role="listitem">
                                                     <button mat-mini-fab aria-label="Example icon button with a menu icon" style="margin-right: 10px;"
-                                                        (click)="setStateTransition(1000)" type="button">
+                                                        (click)="setStateTransition(1000)" type="button" [disabled]="buttonClaim">
                                                         <img class="png-icon" src="../../../../assets/image/money.png" style="width: 24px; height: 24px;">
                                                     </button>                                                    
                                                     <mat-label>1.000</mat-label>
                                                 </mat-list-item>
                                                 <mat-list-item role="listitem">
                                                     <button mat-mini-fab aria-label="Example icon button with a menu icon" style="margin-right: 10px;"
-                                                        (click)="setStateTransition(2000)" type="button">
+                                                        (click)="setStateTransition(2000)" type="button" [disabled]="buttonClaim">
                                                         <img class="png-icon" src="../../../../assets/image/dollars.png" style="width: 24px; height: 24px;">
                                                     </button>                                                    
                                                     <mat-label>2.000</mat-label>
                                                 </mat-list-item>
                                                 <mat-list-item role="listitem">
                                                     <button mat-mini-fab aria-label="Example icon button with a menu icon" style="margin-right: 10px;"
-                                                        (click)="setStateTransition(5000)" type="button">
+                                                        (click)="setStateTransition(5000)" type="button" [disabled]="buttonClaim">
                                                         <img class="png-icon" src="../../../../assets/image/dollars.png" style="width: 24px; height: 24px;">
                                                     </button>                                                    
                                                     <mat-label>5.000</mat-label>
@@ -126,7 +126,7 @@
                                             </mat-form-field>
                                         </td>
                                         <td>
-                                            <button mat-flat-button type="button" color="primary" (click)="claimProduct()">Reclamar producto</button>
+                                            <button mat-flat-button type="button" [disabled]="buttonClaim" color="primary" (click)="claimProduct()">Reclamar producto</button>
                                         </td>
                                     </tr>                                                                                       
                                 </table>

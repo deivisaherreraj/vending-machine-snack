@@ -201,6 +201,22 @@ export class MachineService {
     return arrayValues;
   };
 
+  addNodes(valorTotal: number) {
+    this.myNodes.push({ 
+      id: valorTotal, 
+      label: `${valorTotal}`, 
+      shape: 'circle', 
+      size: 30 
+    });
+  }
+
+  addEdges(fromTotal: number, toTotal: number) {
+    this.myEdges.push({ 
+      from: fromTotal, 
+      to: toTotal 
+    });
+  }
+
   setContainer(container: any) {
     this.myContainer = container;
   }
