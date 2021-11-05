@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Snack } from 'src/app/models/snack';
 import { TableTransition } from 'src/app/models/tableTransition';
 import { MachineService } from 'src/app/services/machine.service';
+import { TransitionTableComponent } from 'src/app/components/machine/transition-table/transition-table.component';
 
 @Component({
   selector: 'app-vending-machine',
@@ -11,6 +12,8 @@ import { MachineService } from 'src/app/services/machine.service';
   styleUrls: ['./vending-machine.component.css']
 })
 export class VendingMachineComponent implements OnInit {
+  @ViewChild(TransitionTableComponent) transitionTable: TransitionTableComponent | undefined;
+
   formSnack: FormGroup;
   formMachine: FormGroup;
 
@@ -118,6 +121,8 @@ export class VendingMachineComponent implements OnInit {
         }
       }
     });
+    
+    this.machineService.drawSvgNetwork(this.displayTotal, money);
 
     this.displayTotal += money;
   }

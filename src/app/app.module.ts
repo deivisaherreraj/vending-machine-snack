@@ -33,7 +33,7 @@ import { MaterialModule } from './material.module';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    MaterialModule
+    MaterialModule    
   ],
   providers: [],
   bootstrap: [AppComponent]
