@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { MachineService } from 'src/app/services/machine.service';
-import { Network, DataSet, Node, Edge, IdType } from 'vis';
 
 @Component({
   selector: 'app-transition-table',

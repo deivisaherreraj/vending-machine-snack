@@ -92,7 +92,8 @@ export class VendingMachineComponent implements OnInit {
       if (this.displayTotal <= this.selectedValue) {            
         if (element.id == `Fila_${this.displayTotal}`) {
           let sumTotal = (this.displayTotal + money);
-          if (sumTotal <= this.selectedValue) {            
+          if (sumTotal <= this.selectedValue) {
+            this.machineService.drawSvgNetwork(this.displayTotal, sumTotal);            
             switch (sumTotal) {
               case element.stateOne:
                 element.stateOneClass = 'red';
@@ -120,9 +121,7 @@ export class VendingMachineComponent implements OnInit {
           element.stateFourClass = '';
         }
       }
-    });
-    
-    this.machineService.drawSvgNetwork(this.displayTotal, money);
+    });      
 
     this.displayTotal += money;
   }
@@ -143,22 +142,33 @@ export class VendingMachineComponent implements OnInit {
 
     if (this.displayTotal == this.selectedValue) {
       this.returnAmount = 0;
+      this.machineService.drawSvgNetworkFinalState(this.selectedValue);
       this.toastr.success('El producto fue entregado.', 'Entrega');
     }
   }
 
+  /*
+   * Metodo para inicialiar todo los controles.
+   */
   clearProduct() {
     this.myListSnack = Array<Snack>();
     this.machineService.myListTransition = Array<TableTransition>();
+    this.machineService.myNodes = [];
+    this.machineService.myEdges = [];
+    this.machineService.myNetwork.setData({ nodes: [], edges: [] });
     this.returnAmount = 0;
     this.displayTotal = 0;
     this.selectedValue = 0;
   }
 
+  /*
+   * Metodo del evento del control radio button para general la tabla de transición al seleccionar el producto
+   */
   radioChange(element: any) {    
     this.displayTotal = 0;
     this.returnAmount = 0;
     this.selectedValue = element.value;
     this.machineService.loadingTableTransition(this.selectedValue);
+    this.machineService.loadVisTree();
   }
 }

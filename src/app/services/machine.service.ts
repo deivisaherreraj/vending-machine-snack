@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { TableTransition } from '../models/tableTransition';
 import { listStateTransition } from '../config/factories';
-import { Network, DataSet, Node, Edge, IdType } from 'vis';
+import { Network, DataSet, Node, Edge } from 'vis';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MachineService {
   myListTransition: Array<TableTransition> = [];
-  myNodes: Array<number> = [];
-  myEdges: Array<number> = [];  
+  myNodes: Array<Node> = [];
+  myEdges: Array<Edge> = [];  
   myNetwork: any;
   myContainer: any;
 
@@ -67,16 +67,12 @@ export class MachineService {
     this.myListTransition = arrayEmpyt;
   }
 
-  getTreeData = (displayTotal: number, moneyTotal?: number) => {    
-    var nodes = new DataSet([
-      { id: displayTotal, label: `${displayTotal}`, shape: 'circle', size: 30 },
-      { id: moneyTotal, label: `${moneyTotal}`, shape: 'circle', size: 30 }
-    ]);    
+  getTreeData = () => {    
+    // Creamos los estado del automata finito.
+    var nodes = new DataSet(this.myNodes);
 
-    // create an array with edges
-    var edges = new DataSet([
-      { from: displayTotal, to: moneyTotal }
-    ]);
+    // crear una matriz con bordes.   
+    var edges = new DataSet(this.myEdges);
 
     let treeData = {
       nodes: nodes,
@@ -119,10 +115,72 @@ export class MachineService {
     return options;
   }
 
-  drawSvgNetwork(displayTotal: number, moneyTotal?: number) {  
-    let treeData = this.getTreeData(displayTotal, moneyTotal);
+  drawSvgNetwork(displayTotal: number, valueTotal: number) {
+    // Agregamos el estado al automata finito.
+    this.myNodes.push({ 
+      id: valueTotal, 
+      label: `${valueTotal}`, 
+      shape: 'circle', 
+      size: 30 
+    });
+
+    // Agregamos las transiciones a los estados.
+    this.myEdges.push({ 
+      from: displayTotal, 
+      to: valueTotal 
+    });
+    
+    // Modificamos el automata finito con los nuevos valores.
+    this.myNetwork.setData({
+      nodes: this.myNodes,
+      edges: this.myEdges
+    });
+  }
+
+  drawSvgNetworkFinalState(valueTotal: number) {
+    if (this.myNodes.length == 1) {
+      // Agregamos el estado al automata finito.
+      this.myNodes.push({ 
+        id: valueTotal, 
+        label: `${valueTotal}`, 
+        shape: 'circle', 
+        size: 30 
+      });
+
+      // Agregamos las transiciones final del automata finito.
+      this.myEdges.push({ 
+        from: 0, 
+        to: valueTotal 
+      });
+    }
+
+    // Agregamos las transiciones final del automata finito.
+    this.myEdges.push({ 
+      from: valueTotal, 
+      to: 0 
+    });
+    
+    // Modificamos el automata finito con los nuevos valores.
+    this.myNetwork.setData({
+      nodes: this.myNodes,
+      edges: this.myEdges
+    });
+  }
+
+  loadVisTree = () => {
+    this.myNodes = [];
+    this.myEdges = [];
+
+    this.myNodes.push({ 
+      id: 0, 
+      label: `${0}`, 
+      shape: 'circle', 
+      size: 30 
+    });
+
+    let treeData = this.getTreeData();
     let options = this.getOptionsTreeData();
-    let network = new Network(this.myContainer, treeData, options);
+    this.myNetwork = new Network(this.myContainer, treeData, options);
   }
 
   getNewGuid = () => {    
