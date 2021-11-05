@@ -1,0 +1,29 @@
+.demo-table {
+    width: 100%;
+}
+
+.mat-column-lineTransition {    
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-stateOne {        
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-stateTwo {        
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-stateThree {        
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-stateFour {        
+    padding-right: 24px;
+    text-align: center;
+}

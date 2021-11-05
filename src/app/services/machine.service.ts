@@ -21,7 +21,6 @@ export class MachineService {
   };
 
   loadingTableTransition(total: number) {
-    let arrayState: number[] = [500, 1000, 2000, 5000];   
     let arrayEmpyt = Array<TableTransition>();
     
     for (let index = 0; index <= total; index+=500) {      
@@ -70,4 +69,14 @@ export class MachineService {
     this.myListTransition = Array<TableTransition>();
     this.myListTransition = arrayEmpyt;
   }
+
+  getValidValues = () => {
+    let arrayValues = Array<number>();
+
+    for (let index = 1000; index <= 5000; index+=500) {
+      arrayValues.push(index);
+    }
+
+    return arrayValues;
+  };
 }

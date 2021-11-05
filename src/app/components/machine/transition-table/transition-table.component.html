@@ -8,7 +8,7 @@
         <mat-card-content class="smaller-card-content" fxLayout="column" fxLayout.lg="column" fxLayout.xl="column">
             <div fxFlex.lg fxFlex>
                 <div fxLayout="row" fxLayout.xl="row">
-                    <table mat-table [dataSource]="machineService.myListTransition" recycleRows fxFlex fxFlex.lg fxFlex.xl class="mat-elevation-z8" style="width: 100%;">
+                    <table mat-table [dataSource]="machineService.myListTransition" recycleRows fxFlex fxFlex.lg fxFlex.xl class="mat-elevation-z8 demo-table">
                         <ng-container matColumnDef="lineTransition">
                             <th mat-header-cell *matHeaderCellDef> ---- </th>
                             <td mat-cell *matCellDef="let element">
@@ -18,28 +18,28 @@
                         
                         <ng-container matColumnDef="stateOne">
                             <th mat-header-cell *matHeaderCellDef> 500 </th>
-                            <td mat-cell *matCellDef="let element">
+                            <td [ngStyle]="{'background-color': element.stateOneClass}" mat-cell *matCellDef="let element">
                               {{element.stateOne ?? "----"}}
                             </td>
                         </ng-container>
 
                         <ng-container matColumnDef="stateTwo">
                             <th mat-header-cell *matHeaderCellDef> 1000 </th>
-                            <td mat-cell *matCellDef="let element">
+                            <td [ngStyle]="{'background-color': element.stateTwoClass}" mat-cell *matCellDef="let element">
                               {{element.stateTwo ?? "----"}}
                             </td>
                         </ng-container>
 
                         <ng-container matColumnDef="stateThree">
                             <th mat-header-cell *matHeaderCellDef> 2000 </th>
-                            <td mat-cell *matCellDef="let element">
+                            <td [ngStyle]="{'background-color': element.stateThreeClass}" mat-cell *matCellDef="let element">
                               {{element.stateThree ?? "----"}}
                             </td>
                         </ng-container>
 
                         <ng-container matColumnDef="stateFour">
                             <th mat-header-cell *matHeaderCellDef> 5000 </th>
-                            <td mat-cell *matCellDef="let element">
+                            <td [ngStyle]="{'background-color': element.stateFourClass}" mat-cell *matCellDef="let element">
                               {{element.stateFour ?? "----"}}
                             </td>
                         </ng-container>
