@@ -20,6 +20,12 @@
         <mat-card-content class="smaller-card-content" fxLayout="column" fxLayout.lg="column" fxLayout.xl="column">
             <div fxFlex.lg fxFlex>
                 <div fxLayout="row" fxLayout.xl="row">
+                    <div class="demo-button-container">
+                        <button mat-raised-button (click)="generateFiniteAutomaton()" class="demo-button">
+                          Generar aut&oacute;mata finito
+                        </button>
+                      </div>
+
                     <table mat-table [dataSource]="machineService.myListTransition" recycleRows fxFlex fxFlex.lg fxFlex.xl class="mat-elevation-z8 demo-table">
                         <ng-container matColumnDef="lineTransition">
                             <th mat-header-cell *matHeaderCellDef> ---- </th>

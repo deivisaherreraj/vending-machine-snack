@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Snack } from 'src/app/models/snack';
 import { TableTransition } from 'src/app/models/tableTransition';
 import { MachineService } from 'src/app/services/machine.service';
+import { defaultSnackData } from 'src/app/config/factories';
 import { TransitionTableComponent } from 'src/app/components/machine/transition-table/transition-table.component';
 
 @Component({
@@ -16,18 +17,14 @@ export class VendingMachineComponent implements OnInit {
 
   formSnack: FormGroup;
   formMachine: FormGroup;
-
-  public LastAmount: number = 0;
+  
   public buttonClaim: boolean = false;
   public returnAmount: number = 0;
   public displayTotal: number = 0;
   public selectedValue: number = 0;
   public selectedProduct: string | undefined;
-  public myListSnack: Snack[] = [
-    {id: 'asdr514', name: 'Pinchos charcuteros', value: 1000},
-    {id: 'weqw82', name: 'Picada de Chorizos', value: 2000},
-    {id: 'hlhmkb56', name: 'Sandwich de Jamón', value: 4000},
-  ];
+  public defaultSnackData = defaultSnackData;
+  public myListSnack: Snack[] = defaultSnackData;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -84,80 +81,57 @@ export class VendingMachineComponent implements OnInit {
     this.formSnack.reset();
   }
 
-  setStateTransition(money: number) {
+  setStateTransition(moneyTotal: number) {
     if (this.selectedValue <= 0) {
       this.toastr.error('Debe seleccionar el producto a reclamar.', 'Error');      
+      return;
+    }
+
+    let sumTotal = (this.displayTotal + moneyTotal);
+
+    if (sumTotal > this.selectedValue) {
+      this.returnAmount += moneyTotal;
+      this.toastr.error('El valor ingresado suma un precio mayor al producto.', 'Error');      
       return;
     }
 
     this.machineService.myListTransition.forEach(element => {
       if (this.displayTotal <= this.selectedValue) {            
         if (element.id == `Fila_${this.displayTotal}`) {
-          let sumTotal = (this.displayTotal + money);
-          this.LastAmount = this.displayTotal;
           if (sumTotal <= this.selectedValue) {
-            this.machineService.drawSvgNetwork(this.displayTotal, sumTotal, money);
+            this.machineService.drawSvgNetwork(this.displayTotal, sumTotal, moneyTotal);
             switch (sumTotal) {
               case element.stateOne:
-                element.stateOneClass = 'red';
+                element.stateOneClass = '#673ab7';
                 break;
               case element.stateTwo:
-                element.stateTwoClass = 'red';
+                element.stateTwoClass = '#673ab7';
                 break; 
               case element.stateThree:
-                element.stateThreeClass = 'red';
+                element.stateThreeClass = '#673ab7';
                 break; 
               case element.stateFour:
-                element.stateFourClass = 'red';
+                element.stateFourClass = '#673ab7';
                 break;            
             } 
-          } else {
-            element.stateOneClass = '';
-            element.stateTwoClass = '';
-            element.stateThreeClass = '';
-            element.stateFourClass = '';
-          }        
-        } else {
-          element.stateOneClass = '';
-          element.stateTwoClass = '';
-          element.stateThreeClass = '';
-          element.stateFourClass = '';
+          }
         }
       }
     });      
 
-    this.displayTotal += money;
+    this.displayTotal += moneyTotal;
   }
 
   claimProduct() {
     if (this.myListSnack.length <= 0) {
-      this.toastr.error('No hay productos registrados para reclamar.', 'Error');
+      this.toastr.error('No hay productos registrados para retirar.', 'Error');
       return;
     }
 
     if (this.selectedValue <= 0) {
-      this.toastr.error('No ha seleccionado el producto para reclamar.', 'Error');
+      this.toastr.error('No ha seleccionado el producto para retirar.', 'Error');
       return;
-    }
-
-    if (this.displayTotal > this.selectedValue) {
-      let totalReturn = (this.displayTotal - this.selectedValue);      
-      this.returnAmount = totalReturn;
-      this.displayTotal -= totalReturn;
-
-      if (this.machineService.myNodes.length == 1) {
-        this.machineService.addNodes(this.displayTotal);
-        this.machineService.addEdges(this.LastAmount, this.displayTotal); 
-      } else {
-        if (this.LastAmount != this.displayTotal) {
-          this.machineService.addNodes(this.displayTotal);
-          this.machineService.addEdges((this.displayTotal - this.returnAmount), this.displayTotal, (this.displayTotal - this.returnAmount)); 
-        }        
-      }
-
-      this.toastr.warning('La cantidad ingresa supera el valor del producto seleccionado.', 'Mensaje');
-      return;
-    }
+    }    
 
     if (this.displayTotal < this.selectedValue) {      
       this.toastr.warning('La cantidad ingresa no es igual al precio del producto seleccionado.', 'Mensaje');
@@ -168,7 +142,7 @@ export class VendingMachineComponent implements OnInit {
       this.returnAmount = 0;
       this.buttonClaim = true;
       this.machineService.drawSvgNetworkFinalState(this.selectedValue);      
-      this.toastr.success('El producto fue entregado.', 'Entrega');
+      this.toastr.success('El producto fue entregado.', 'Retiro');
     }
   }
 
@@ -180,8 +154,7 @@ export class VendingMachineComponent implements OnInit {
     this.machineService.myListTransition = Array<TableTransition>();
     this.machineService.myNodes = [];
     this.machineService.myEdges = [];
-    this.machineService.myNetwork.setData({ nodes: [], edges: [] });
-    this.LastAmount = 0;
+    this.machineService.myNetwork.setData({ nodes: [], edges: [] });    
     this.returnAmount = 0;
     this.displayTotal = 0;
     this.selectedValue = 0;
@@ -191,12 +164,12 @@ export class VendingMachineComponent implements OnInit {
   /*
    * Metodo del evento del control radio button para general la tabla de transición al seleccionar el producto
    */
-  radioChange(element: any) {    
-    this.LastAmount = 0;
+  radioChange(element: any) {
     this.displayTotal = 0;
     this.returnAmount = 0;
     this.buttonClaim = false;
     this.selectedValue = element.value;
+    this.machineService.realTime = true;
     this.machineService.loadingTableTransition(this.selectedValue);
     this.machineService.loadVisTree();
   }

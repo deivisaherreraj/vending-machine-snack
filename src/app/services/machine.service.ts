@@ -13,6 +13,7 @@ export class MachineService {
   myNetwork: any;
   myContainer: any;
 
+  public realTime: boolean = true;
   public listStateTransition = listStateTransition;
 
   constructor() { }     
@@ -25,9 +26,13 @@ export class MachineService {
         id: `Fila_${index}`,
         lineTransition: index,
         stateOne: undefined,
+        stateOneLabel: undefined,
         stateTwo: undefined,
+        stateTwoLabel: undefined,
         stateThree: undefined,
-        stateFour: undefined
+        stateThreeLabel: undefined,
+        stateFour: undefined,
+        stateFourLabel: undefined
       }
 
       listStateTransition.forEach(element => {
@@ -36,24 +41,28 @@ export class MachineService {
         switch (valueName) {
           case "stateOne":
             if (valueState <= total) {
+              transition.stateOneLabel = element.value;
               transition.stateOne = valueState;
             }
             break;
         
           case "stateTwo":
             if (valueState <= total) {
+              transition.stateTwoLabel = element.value;
               transition.stateTwo = valueState;
             }
             break;
 
           case "stateThree":
             if (valueState <= total) {
+              transition.stateThreeLabel = element.value;
               transition.stateThree = valueState;
             }
             break;
           
           case "stateFour":
             if (valueState <= total) {
+              transition.stateFourLabel = element.value;
               transition.stateFour = valueState;
             }
             break;
@@ -98,11 +107,11 @@ export class MachineService {
           }
         },
         font: {
-          size: 5,
+          size: 12, // Tamaño del label
           color:'green',
           align: 'horizontal',
         },
-        length: 60, // Establecer la longitud de la línea de relación
+        length: 150, // Establecer la longitud de la línea de relación
         dashes: false, // La línea punteada de la línea de relación, falso no es, verdadero es
         arrowStrikethrough: true, // No hay espacio entre la línea de relación y el nodo
         color: {
@@ -128,14 +137,17 @@ export class MachineService {
     this.myEdges.push({ 
       from: displayTotal, 
       to: valueTotal,
-      label: `${moneyTotal}`,  
+      label: `${moneyTotal}` 
     });
     
     // Modificamos el automata finito con los nuevos valores.
-    this.myNetwork.setData({
-      nodes: this.myNodes,
-      edges: this.myEdges
-    });
+    if (this.realTime == false) {
+      let treeData = this.getTreeData();
+      let options = this.getOptionsTreeData();
+      this.myNetwork = new Network(this.myContainer, treeData, options);
+    } else {
+      this.myNetwork.setData({ nodes: this.myNodes, edges: this.myEdges });
+    }
   }
 
   drawSvgNetworkFinalState(valueTotal: number) {
@@ -162,10 +174,13 @@ export class MachineService {
     });
     
     // Modificamos el automata finito con los nuevos valores.
-    this.myNetwork.setData({
-      nodes: this.myNodes,
-      edges: this.myEdges
-    });
+    if (this.realTime == false) {
+      let treeData = this.getTreeData();
+      let options = this.getOptionsTreeData();
+      this.myNetwork = new Network(this.myContainer, treeData, options);
+    } else {
+      this.myNetwork.setData({ nodes: this.myNodes, edges: this.myEdges });
+    }
   }
 
   loadVisTree = () => {
@@ -194,11 +209,9 @@ export class MachineService {
 
   getValidValues = () => {
     let arrayValues = Array<number>();
-
     for (let index = 1000; index <= 5000; index+=500) {
       arrayValues.push(index);
     }
-
     return arrayValues;
   };
 
@@ -216,7 +229,7 @@ export class MachineService {
       this.myEdges.push({ 
         from: fromTotal, 
         to: toTotal,
-        label: `${moneyTotal}`,
+        label: `${moneyTotal}`
       });
     } else {
       this.myEdges.push({ 
