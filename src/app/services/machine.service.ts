@@ -115,7 +115,7 @@ export class MachineService {
     return options;
   }
 
-  drawSvgNetwork(displayTotal: number, valueTotal: number) {
+  drawSvgNetwork(displayTotal: number, valueTotal: number, moneyTotal: number) {
     // Agregamos el estado al automata finito.
     this.myNodes.push({ 
       id: valueTotal, 
@@ -127,7 +127,8 @@ export class MachineService {
     // Agregamos las transiciones a los estados.
     this.myEdges.push({ 
       from: displayTotal, 
-      to: valueTotal 
+      to: valueTotal,
+      label: `${moneyTotal}`,  
     });
     
     // Modificamos el automata finito con los nuevos valores.
@@ -210,11 +211,19 @@ export class MachineService {
     });
   }
 
-  addEdges(fromTotal: number, toTotal: number) {
-    this.myEdges.push({ 
-      from: fromTotal, 
-      to: toTotal 
-    });
+  addEdges(fromTotal: number, toTotal: number, moneyTotal?: number) {
+    if (moneyTotal != undefined) {
+      this.myEdges.push({ 
+        from: fromTotal, 
+        to: toTotal,
+        label: `${moneyTotal}`,
+      });
+    } else {
+      this.myEdges.push({ 
+        from: fromTotal, 
+        to: toTotal
+      });
+    }    
   }
 
   setContainer(container: any) {

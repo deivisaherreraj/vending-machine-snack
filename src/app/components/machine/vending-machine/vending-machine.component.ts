@@ -74,7 +74,7 @@ export class VendingMachineComponent implements OnInit {
     }
 
     if (snackObject.length > 0) {
-      this.toastr.error('El prodcuto a registrar ya existe.', 'Error');      
+      this.toastr.error('El producto a registrar ya existe.', 'Error');      
       return;
     }
 
@@ -96,7 +96,7 @@ export class VendingMachineComponent implements OnInit {
           let sumTotal = (this.displayTotal + money);
           this.LastAmount = this.displayTotal;
           if (sumTotal <= this.selectedValue) {
-            this.machineService.drawSvgNetwork(this.displayTotal, sumTotal);
+            this.machineService.drawSvgNetwork(this.displayTotal, sumTotal, money);
             switch (sumTotal) {
               case element.stateOne:
                 element.stateOneClass = 'red';
@@ -151,7 +151,7 @@ export class VendingMachineComponent implements OnInit {
       } else {
         if (this.LastAmount != this.displayTotal) {
           this.machineService.addNodes(this.displayTotal);
-          this.machineService.addEdges((this.displayTotal - this.returnAmount), this.displayTotal); 
+          this.machineService.addEdges((this.displayTotal - this.returnAmount), this.displayTotal, (this.displayTotal - this.returnAmount)); 
         }        
       }
 
